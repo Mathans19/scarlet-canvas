@@ -30,10 +30,12 @@ export default {
         },
         crimson: "hsl(var(--crimson))",
         blood: "hsl(var(--blood))",
+        darkhold: "hsl(var(--darkhold))",
         mystic: {
           DEFAULT: "hsl(var(--mystic))",
           dark: "hsl(var(--mystic-dark))",
         },
+        chaos: "hsl(var(--chaos))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
