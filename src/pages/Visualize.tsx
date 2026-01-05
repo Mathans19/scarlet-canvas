@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { BarChart2, PieChart, LineChart, ScatterChart, Layers } from "lucide-react";
+import { BarChart2, PieChart, LineChart, ScatterChart, Layers, Download, Maximize, Share2 } from "lucide-react";
 import Layout from "@/components/Layout";
+import TiltCard from "@/components/TiltCard";
+import MagicButton from "@/components/MagicButton";
 
 const chartTypes = [
   { id: "bar", label: "Bar Chart", icon: BarChart2 },
@@ -238,38 +240,31 @@ const Visualize = () => {
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Chart Type Selector */}
           <div className="lg:col-span-1">
-            <div className="glass-card p-6 sticky top-28">
+            <TiltCard className="p-6 sticky top-28" intensity={5}>
               <h3 className="font-display text-lg text-foreground mb-4 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-scarlet" />
                 Chart Types
               </h3>
               <div className="space-y-2">
                 {chartTypes.map((chart) => (
-                  <button
+                  <MagicButton
                     key={chart.id}
                     onClick={() => setActiveChart(chart.id)}
-                    className={`
-                      w-full p-3 rounded-lg flex items-center gap-3 transition-all duration-300
-                      ${activeChart === chart.id 
-                        ? "bg-scarlet-dark/30 border border-scarlet/50 text-foreground" 
-                        : "bg-transparent border border-transparent hover:bg-muted/30 text-muted-foreground"
-                      }
-                    `}
-                    style={{
-                      boxShadow: activeChart === chart.id ? "var(--glow-sm)" : undefined,
-                    }}
+                    variant={activeChart === chart.id ? "primary" : "ghost"}
+                    size="sm"
+                    className="w-full justify-start"
                   >
-                    <chart.icon className={`w-5 h-5 ${activeChart === chart.id ? "text-scarlet" : ""}`} />
-                    <span className="font-sans text-sm">{chart.label}</span>
-                  </button>
+                    <chart.icon className="w-5 h-5" />
+                    <span>{chart.label}</span>
+                  </MagicButton>
                 ))}
               </div>
-            </div>
+            </TiltCard>
           </div>
 
           {/* Main Chart Area */}
           <div className="lg:col-span-3">
-            <div className="glass-card p-8 energy-pulse">
+            <TiltCard className="p-8 energy-pulse" intensity={4}>
               <div className="flex items-center justify-between mb-8">
                 <h2 className="font-display text-xl text-foreground">
                   {chartTypes.find((c) => c.id === activeChart)?.label}
@@ -299,17 +294,25 @@ const Visualize = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </TiltCard>
 
             {/* Quick Actions */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-              {["Export PNG", "Export SVG", "Full Screen", "Share Link"].map((action) => (
-                <button
-                  key={action}
-                  className="glass-card p-4 text-center font-sans text-sm text-muted-foreground hover:text-foreground hover:border-scarlet/30 transition-all duration-300"
+              {[
+                { label: "Export PNG", icon: Download },
+                { label: "Export SVG", icon: Download },
+                { label: "Full Screen", icon: Maximize },
+                { label: "Share Link", icon: Share2 },
+              ].map((action) => (
+                <MagicButton
+                  key={action.label}
+                  variant="secondary"
+                  size="sm"
+                  className="w-full"
                 >
-                  {action}
-                </button>
+                  <action.icon className="w-4 h-4" />
+                  {action.label}
+                </MagicButton>
               ))}
             </div>
           </div>

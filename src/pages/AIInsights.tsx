@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Send, Sparkles, Brain, Zap, Eye } from "lucide-react";
 import Layout from "@/components/Layout";
+import TiltCard from "@/components/TiltCard";
+import MagicButton from "@/components/MagicButton";
+import ChaosSpinner from "@/components/ChaosSpinner";
 
 interface Message {
   id: number;
@@ -108,7 +111,7 @@ const AIInsights = () => {
         <div className="flex-1 flex gap-6 min-h-0">
           {/* Chat Area */}
           <div className="flex-1 flex flex-col min-h-0">
-            <div className="glass-card flex-1 flex flex-col min-h-0 overflow-hidden">
+            <TiltCard className="flex-1 flex flex-col min-h-0 overflow-hidden" intensity={2}>
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {messages.map((message) => (
@@ -149,15 +152,9 @@ const AIInsights = () => {
                 {isTyping && (
                   <div className="flex justify-start">
                     <div className="bg-muted/50 border border-border rounded-2xl rounded-bl-sm p-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-scarlet/20 flex items-center justify-center">
-                          <Sparkles className="w-3 h-3 text-scarlet animate-spin" />
-                        </div>
-                        <div className="flex gap-1">
-                          <span className="w-2 h-2 rounded-full bg-scarlet animate-bounce" style={{ animationDelay: "0ms" }} />
-                          <span className="w-2 h-2 rounded-full bg-scarlet animate-bounce" style={{ animationDelay: "150ms" }} />
-                          <span className="w-2 h-2 rounded-full bg-scarlet animate-bounce" style={{ animationDelay: "300ms" }} />
-                        </div>
+                      <div className="flex items-center gap-4">
+                        <ChaosSpinner size="sm" />
+                        <span className="text-sm text-muted-foreground">Channeling wisdom...</span>
                       </div>
                     </div>
                   </div>
@@ -176,42 +173,38 @@ const AIInsights = () => {
                     className="mystic-input flex-1"
                     disabled={isTyping}
                   />
-                  <button
-                    type="submit"
+                  <MagicButton
                     disabled={!input.trim() || isTyping}
-                    className="chaos-btn px-6 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Send className="w-4 h-4" />
-                  </button>
+                  </MagicButton>
                 </form>
               </div>
-            </div>
+            </TiltCard>
           </div>
 
           {/* Suggestions Panel */}
           <div className="w-72 hidden lg:block">
-            <div className="glass-card p-6 sticky top-28">
+            <TiltCard className="p-6 sticky top-28" intensity={5}>
               <h3 className="font-display text-lg text-foreground mb-4 flex items-center gap-2">
                 <Brain className="w-5 h-5 text-scarlet" />
                 Quick Queries
               </h3>
               <div className="space-y-3">
                 {suggestedQueries.map((suggestion) => (
-                  <button
+                  <MagicButton
                     key={suggestion.label}
                     onClick={() => handleSuggestion(suggestion.query)}
                     disabled={isTyping}
-                    className="w-full p-3 rounded-lg bg-muted/30 border border-transparent hover:border-scarlet/30 text-left transition-all duration-300 group disabled:opacity-50"
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-scarlet-dark/30 flex items-center justify-center group-hover:bg-scarlet/20 transition-colors">
-                        <suggestion.icon className="w-4 h-4 text-scarlet" />
-                      </div>
-                      <span className="font-sans text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                        {suggestion.label}
-                      </span>
+                    <div className="w-8 h-8 rounded-lg bg-scarlet-dark/30 flex items-center justify-center">
+                      <suggestion.icon className="w-4 h-4 text-scarlet" />
                     </div>
-                  </button>
+                    <span>{suggestion.label}</span>
+                  </MagicButton>
                 ))}
               </div>
 
@@ -225,7 +218,7 @@ const AIInsights = () => {
                   and provide chaos-powered insights.
                 </p>
               </div>
-            </div>
+            </TiltCard>
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
-import { TrendingUp, TrendingDown, Database, Columns, AlertTriangle, CheckCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Database, Columns, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
 import Layout from "@/components/Layout";
+import TiltCard from "@/components/TiltCard";
+import MagicButton from "@/components/MagicButton";
 
 const stats = [
   { label: "Total Rows", value: "1,247,832", icon: Database, trend: "+12.5%", up: true },
@@ -22,23 +24,29 @@ const EDAReport = () => {
     <Layout>
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text text-glow">Reality Analysis</span>
-          </h1>
-          <p className="text-muted-foreground font-sans max-w-xl">
-            Exploratory insights channeled from your dataset. Every pattern revealed, 
-            every anomaly exposed.
-          </p>
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              <span className="gradient-text text-glow">Reality Analysis</span>
+            </h1>
+            <p className="text-muted-foreground font-sans max-w-xl">
+              Exploratory insights channeled from your dataset. Every pattern revealed, 
+              every anomaly exposed.
+            </p>
+          </div>
+          <MagicButton variant="secondary" size="sm">
+            <RefreshCw className="w-4 h-4" />
+            Refresh Analysis
+          </MagicButton>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {stats.map((stat, i) => (
-            <div
+            <TiltCard
               key={stat.label}
-              className="glass-card p-6 float"
-              style={{ animationDelay: `${i * 0.5}s` }}
+              className="p-6 float"
+              intensity={10}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 rounded-xl bg-scarlet-dark/30 flex items-center justify-center">
@@ -51,13 +59,18 @@ const EDAReport = () => {
               </div>
               <p className="font-display text-2xl text-foreground mb-1">{stat.value}</p>
               <p className="text-muted-foreground text-sm font-sans">{stat.label}</p>
-            </div>
+            </TiltCard>
           ))}
         </div>
 
         {/* Column Analysis */}
-        <div className="glass-card p-8 mb-8">
-          <h2 className="font-display text-2xl text-foreground mb-6">Column Insights</h2>
+        <TiltCard className="p-8 mb-8" intensity={3}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-display text-2xl text-foreground">Column Insights</h2>
+            <MagicButton variant="ghost" size="sm">
+              Export Report
+            </MagicButton>
+          </div>
           
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -71,7 +84,7 @@ const EDAReport = () => {
                 </tr>
               </thead>
               <tbody>
-                {columns.map((col, i) => (
+                {columns.map((col) => (
                   <tr
                     key={col.name}
                     className="border-b border-border/50 hover:bg-scarlet-dark/5 transition-colors group"
@@ -104,12 +117,12 @@ const EDAReport = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </TiltCard>
 
         {/* Distribution Charts */}
         <div className="grid md:grid-cols-2 gap-6">
           {/* Numeric Distribution */}
-          <div className="glass-card p-6">
+          <TiltCard className="p-6" intensity={8}>
             <h3 className="font-display text-lg text-foreground mb-4">Value Distribution</h3>
             <div className="space-y-4">
               {["0-100", "100-500", "500-1000", "1000-5000", "5000+"].map((range, i) => {
@@ -133,10 +146,10 @@ const EDAReport = () => {
                 );
               })}
             </div>
-          </div>
+          </TiltCard>
 
           {/* Correlation Matrix Preview */}
-          <div className="glass-card p-6">
+          <TiltCard className="p-6" intensity={8}>
             <h3 className="font-display text-lg text-foreground mb-4">Correlation Heatmap</h3>
             <div className="grid grid-cols-5 gap-1">
               {Array.from({ length: 25 }).map((_, i) => {
@@ -160,7 +173,7 @@ const EDAReport = () => {
               <span>Low</span>
               <span>High</span>
             </div>
-          </div>
+          </TiltCard>
         </div>
       </div>
     </Layout>
