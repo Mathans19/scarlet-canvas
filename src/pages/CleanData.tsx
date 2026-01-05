@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Trash2, Wand2, ArrowUpDown, Filter, CheckCircle2, XCircle, RefreshCw } from "lucide-react";
+import { Trash2, Wand2, ArrowUpDown, Filter, CheckCircle2, XCircle } from "lucide-react";
 import Layout from "@/components/Layout";
+import TiltCard from "@/components/TiltCard";
+import MagicButton from "@/components/MagicButton";
+import ChaosSpinner from "@/components/ChaosSpinner";
 
 const sampleData = [
   { id: 1, name: "John Doe", email: "john@email.com", age: 28, score: 85.5, status: "active" },
@@ -56,7 +59,7 @@ const CleanData = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Operations Panel */}
           <div className="lg:col-span-1">
-            <div className="glass-card p-6 sticky top-28">
+            <TiltCard className="p-6 sticky top-28" intensity={5}>
               <h2 className="font-display text-xl text-foreground mb-6">Transformation Spells</h2>
               
               <div className="space-y-3 mb-6">
@@ -95,17 +98,14 @@ const CleanData = () => {
                 ))}
               </div>
 
-              <button
+              <MagicButton
                 onClick={handleApply}
                 disabled={!selectedOp || isProcessing}
-                className={`
-                  w-full chaos-btn flex items-center justify-center gap-2
-                  ${(!selectedOp || isProcessing) ? "opacity-50 cursor-not-allowed" : ""}
-                `}
+                className="w-full"
               >
                 {isProcessing ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <ChaosSpinner size="sm" />
                     <span>Casting Spell...</span>
                   </>
                 ) : (
@@ -114,13 +114,13 @@ const CleanData = () => {
                     <span>Apply Transformation</span>
                   </>
                 )}
-              </button>
-            </div>
+              </MagicButton>
+            </TiltCard>
           </div>
 
           {/* Data Table */}
           <div className="lg:col-span-2">
-            <div className="glass-card p-6 overflow-hidden">
+            <TiltCard className="p-6 overflow-hidden" intensity={3}>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-display text-xl text-foreground">Data Preview</h2>
                 <span className="font-sans text-sm text-muted-foreground">
@@ -218,7 +218,7 @@ const CleanData = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </TiltCard>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-3 gap-4 mt-6">
@@ -227,10 +227,10 @@ const CleanData = () => {
                 { label: "Duplicates", value: "0", color: "text-green-400" },
                 { label: "Outliers", value: "2", color: "text-yellow-400" },
               ].map((stat) => (
-                <div key={stat.label} className="glass-card p-4 text-center">
+                <TiltCard key={stat.label} className="p-4 text-center" intensity={10}>
                   <p className={`font-display text-2xl ${stat.color}`}>{stat.value}</p>
                   <p className="font-sans text-xs text-muted-foreground">{stat.label}</p>
-                </div>
+                </TiltCard>
               ))}
             </div>
           </div>
