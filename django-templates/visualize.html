@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}Visualize - WANDA Analytics{% endblock %}
+{% block nav_visualize %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Header -->
+  <div style="margin-bottom: 3rem;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">
+      <span class="gradient-text text-glow">Visual Projections</span>
+    </h1>
+    <p style="color: hsl(var(--muted-foreground)); font-family: Inter, sans-serif; max-width: 36rem;">
+      Project your data into stunning visual dimensions. Each chart reveals 
+      a new facet of your reality.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 1.5rem;">
+    <!-- Chart Type Selector -->
+    <div>
+      <div class="glass-card tilt-card" data-intensity="5" style="padding: 1.5rem; position: sticky; top: 7rem;">
+        <div class="glow-overlay"></div>
+        <h3 style="font-family: Cinzel, serif; font-size: 1.125rem; color: hsl(var(--foreground)); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+          </svg>
+          Chart Types
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="chartTypes">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Chart Area -->
+    <div>
+      <div class="glass-card tilt-card" data-intensity="4" style="padding: 2rem; animation: pulse-glow 2s ease-in-out infinite;">
+        <div class="glow-overlay"></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+          <h2 id="chartTitle" style="font-family: Cinzel, serif; font-size: 1.25rem; color: hsl(var(--foreground));">Bar Chart</h2>
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: Inter, sans-serif;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--scarlet)); animation: pulse 2s ease-in-out infinite;"></span>
+            Live Preview
+          </div>
+        </div>
+
+        <div id="chartContainer" style="transition: all 0.5s;">
+          <!-- Chart rendered here -->
+        </div>
+
+        <!-- Legend -->
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid hsl(var(--border)); display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: hsl(348, 83%, 50%); box-shadow: 0 0 8px hsl(348, 83%, 50%);"></div>
+            <span style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground));">Series A</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: hsl(318, 73%, 45%); box-shadow: 0 0 8px hsl(318, 73%, 45%);"></div>
+            <span style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground));">Series B</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: hsl(288, 63%, 40%); box-shadow: 0 0 8px hsl(288, 63%, 40%);"></div>
+            <span style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground));">Series C</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem;">
+        <button class="magic-btn secondary sm" style="width: 100%;">
+          <span class="shimmer"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export PNG
+        </button>
+        <button class="magic-btn secondary sm" style="width: 100%;">
+          <span class="shimmer"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export SVG
+        </button>
+        <button class="magic-btn secondary sm" style="width: 100%;">
+          <span class="shimmer"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          Full Screen
+        </button>
+        <button class="magic-btn secondary sm" style="width: 100%;">
+          <span class="shimmer"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share Link
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 1024px) {
+    .container > div:last-child { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const chartTypes = [
+    { id: "bar", label: "Bar Chart", icon: '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>' },
+    { id: "line", label: "Line Chart", icon: '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>' },
+    { id: "pie", label: "Pie Chart", icon: '<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>' },
+    { id: "scatter", label: "Scatter Plot", icon: '<circle cx="7.5" cy="7.5" r="1.5"/><circle cx="18.5" cy="5.5" r="1.5"/><circle cx="11.5" cy="11.5" r="1.5"/><circle cx="7.5" cy="16.5" r="1.5"/><circle cx="17.5" cy="14.5" r="1.5"/><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="3" x2="3" y2="21"/>' },
+  ];
+
+  let activeChart = "bar";
+
+  // Populate chart types
+  const chartTypesContainer = document.getElementById('chartTypes');
+  chartTypes.forEach(chart => {
+    const btn = document.createElement('button');
+    btn.id = `chart-${chart.id}`;
+    btn.className = 'magic-btn sm';
+    btn.style.cssText = 'width: 100%; justify-content: flex-start;';
+    btn.innerHTML = `
+      <span class="shimmer"></span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${chart.icon}</svg>
+      <span>${chart.label}</span>
+    `;
+    
+    btn.onclick = () => {
+      activeChart = chart.id;
+      updateChartButtons();
+      renderChart();
+    };
+    
+    chartTypesContainer.appendChild(btn);
+  });
+
+  function updateChartButtons() {
+    chartTypes.forEach(chart => {
+      const btn = document.getElementById(`chart-${chart.id}`);
+      if (chart.id === activeChart) {
+        btn.className = 'magic-btn primary sm';
+      } else {
+        btn.className = 'magic-btn ghost sm';
+      }
+    });
+    document.getElementById('chartTitle').textContent = chartTypes.find(c => c.id === activeChart).label;
+  }
+
+  function renderChart() {
+    const container = document.getElementById('chartContainer');
+    
+    if (activeChart === 'bar') {
+      const data = [65, 45, 78, 52, 88, 70, 95, 60];
+      const maxVal = Math.max(...data);
+      container.innerHTML = `
+        <div style="height: 256px; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px; padding: 0 1rem;">
+          ${data.map((value, i) => `
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <div style="width: 100%; height: ${(value / maxVal) * 100}%; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, hsl(348, 83%, 50%), hsl(348, 83%, 30%)); transition: all 0.7s; animation-delay: ${i * 0.1}s; position: relative; overflow: hidden; cursor: pointer;" onmouseenter="this.style.boxShadow='0 0 20px hsl(348, 83%, 50%)'" onmouseleave="this.style.boxShadow='none'">
+                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, hsl(0 0% 100% / 0.1), transparent); opacity: 0; transition: opacity 0.3s;"></div>
+              </div>
+              <span style="font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: monospace;">${value}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (activeChart === 'line') {
+      const data = [30, 55, 40, 65, 50, 80, 60, 90, 75, 95];
+      const maxVal = Math.max(...data);
+      container.innerHTML = `
+        <div style="height: 256px; position: relative; padding: 0 1rem;">
+          <svg style="width: 100%; height: 100%;" viewBox="0 0 400 200" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="hsl(280, 60%, 50%)" />
+                <stop offset="50%" stop-color="hsl(348, 83%, 50%)" />
+                <stop offset="100%" stop-color="hsl(348, 83%, 60%)" />
+              </linearGradient>
+              <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="hsl(348, 83%, 50%)" stop-opacity="0.3" />
+                <stop offset="100%" stop-color="hsl(348, 83%, 50%)" stop-opacity="0" />
+              </linearGradient>
+              <filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <path d="M 0 ${200 - (data[0] / maxVal) * 180} ${data.map((v, i) => `L ${(i / (data.length - 1)) * 400} ${200 - (v / maxVal) * 180}`).join(' ')} L 400 200 L 0 200 Z" fill="url(#areaGradient)"/>
+            <path d="M 0 ${200 - (data[0] / maxVal) * 180} ${data.map((v, i) => `L ${(i / (data.length - 1)) * 400} ${200 - (v / maxVal) * 180}`).join(' ')}" fill="none" stroke="url(#lineGradient)" stroke-width="3" filter="url(#glow)"/>
+            ${data.map((v, i) => `<circle cx="${(i / (data.length - 1)) * 400}" cy="${200 - (v / maxVal) * 180}" r="6" fill="hsl(348, 83%, 50%)" style="cursor: pointer; filter: drop-shadow(0 0 5px hsl(348, 83%, 50%));"/>`).join('')}
+          </svg>
+        </div>
+      `;
+    } else if (activeChart === 'pie') {
+      const data = [35, 25, 20, 15, 5];
+      const colors = ["hsl(348, 83%, 45%)", "hsl(348, 83%, 35%)", "hsl(280, 60%, 45%)", "hsl(280, 60%, 35%)", "hsl(240, 10%, 30%)"];
+      let cumulative = 0;
+      
+      let paths = '';
+      data.forEach((value, i) => {
+        const startAngle = cumulative * 2 * Math.PI;
+        cumulative += value / 100;
+        const endAngle = cumulative * 2 * Math.PI;
+        const x1 = Math.cos(startAngle);
+        const y1 = Math.sin(startAngle);
+        const x2 = Math.cos(endAngle);
+        const y2 = Math.sin(endAngle);
+        const largeArc = value > 50 ? 1 : 0;
+        paths += `<path d="M 0 0 L ${x1} ${y1} A 1 1 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${colors[i]}" style="cursor: pointer; transition: all 0.3s;" onmouseenter="this.style.opacity='0.8'" onmouseleave="this.style.opacity='1'"/>`;
+      });
+      
+      container.innerHTML = `
+        <div style="height: 256px; display: flex; align-items: center; justify-content: center;">
+          <svg viewBox="-1.5 -1.5 3 3" style="width: 224px; height: 224px; filter: drop-shadow(0 0 20px hsl(348, 83%, 40%));">
+            ${paths}
+            <circle cx="0" cy="0" r="0.5" fill="hsl(240, 10%, 8%)" />
+          </svg>
+        </div>
+      `;
+    } else if (activeChart === 'scatter') {
+      const points = Array.from({ length: 30 }, () => ({
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 10 + 5,
+      }));
+      
+      let gridLines = '';
+      [0.25, 0.5, 0.75].forEach(pos => {
+        gridLines += `
+          <line x1="${pos * 400}" y1="0" x2="${pos * 400}" y2="200" stroke="hsl(240, 10%, 20%)" stroke-width="1"/>
+          <line x1="0" y1="${pos * 200}" x2="400" y2="${pos * 200}" stroke="hsl(240, 10%, 20%)" stroke-width="1"/>
+        `;
+      });
+      
+      container.innerHTML = `
+        <div style="height: 256px; position: relative; padding: 0 1rem;">
+          <svg style="width: 100%; height: 100%;" viewBox="0 0 400 200">
+            <defs>
+              <radialGradient id="pointGradient">
+                <stop offset="0%" stop-color="hsl(348, 83%, 60%)" />
+                <stop offset="100%" stop-color="hsl(348, 83%, 40%)" />
+              </radialGradient>
+            </defs>
+            ${gridLines}
+            ${points.map(point => `
+              <circle cx="${(point.x / 100) * 380 + 10}" cy="${200 - (point.y / 100) * 180 - 10}" r="${point.size}" fill="url(#pointGradient)" style="cursor: pointer; filter: drop-shadow(0 0 4px hsl(348, 83%, 50%)); opacity: 0.8;"/>
+            `).join('')}
+          </svg>
+        </div>
+      `;
+    }
+  }
+
+  updateChartButtons();
+  renderChart();
+</script>
+{% endblock %}

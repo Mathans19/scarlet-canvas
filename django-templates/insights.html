@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}AI Insights - WANDA Analytics{% endblock %}
+{% block nav_insights %}active{% endblock %}
+
+{% block content %}
+<div class="container" style="height: calc(100vh - 8rem); display: flex; flex-direction: column;">
+  <!-- Header -->
+  <div style="margin-bottom: 2rem;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">
+      <span class="gradient-text text-glow">Chaos Oracle</span>
+    </h1>
+    <p style="color: hsl(var(--muted-foreground)); font-family: Inter, sans-serif; max-width: 36rem;">
+      Channel the wisdom of artificial intelligence to unlock insights hidden 
+      within your data. Ask, and reality shall answer.
+    </p>
+  </div>
+
+  <div style="flex: 1; display: flex; gap: 1.5rem; min-height: 0;">
+    <!-- Chat Area -->
+    <div style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+      <div class="glass-card tilt-card" data-intensity="2" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden;">
+        <div class="glow-overlay"></div>
+        
+        <!-- Messages -->
+        <div id="messagesContainer" style="flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Initial message -->
+          <div style="display: flex; justify-content: flex-start;">
+            <div style="max-width: 80%; padding: 1rem; border-radius: 1rem 1rem 1rem 0.25rem; background: hsl(var(--muted) / 0.5); border: 1px solid hsl(var(--border));">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <div style="width: 1.5rem; height: 1.5rem; border-radius: 50%; background: hsl(var(--scarlet) / 0.2); display: flex; align-items: center; justify-content: center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+                    <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/>
+                  </svg>
+                </div>
+                <span style="font-family: Cinzel, serif; font-size: 0.75rem; color: hsl(var(--scarlet));">Chaos Oracle</span>
+              </div>
+              <p style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--foreground)); line-height: 1.6;">
+                I am the manifestation of chaos wisdom. Ask me anything about your data, and I shall reveal the hidden truths within the patterns of reality.
+              </p>
+              <span id="initialTime" style="display: block; margin-top: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div id="typingIndicator" style="display: none; padding: 0 1.5rem 1rem;">
+          <div style="display: flex; justify-content: flex-start;">
+            <div style="background: hsl(var(--muted) / 0.5); border: 1px solid hsl(var(--border)); border-radius: 1rem 1rem 1rem 0.25rem; padding: 1rem; display: flex; align-items: center; gap: 1rem;">
+              <div class="chaos-spinner" style="transform: scale(0.4);">
+                <div class="spinner-container" style="width: 40px; height: 40px;">
+                  <div class="spinner-ring" id="typingRing" style="border-top-color: hsl(348 83% 50% / 0.8); border-right-color: hsl(280 60% 50% / 0.4);"></div>
+                  <div class="spinner-core" style="width: 12px; height: 12px;"></div>
+                </div>
+              </div>
+              <span style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Channeling wisdom...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div style="padding: 1rem; border-top: 1px solid hsl(var(--border));">
+          <form id="chatForm" style="display: flex; gap: 0.75rem;">
+            <input type="text" id="chatInput" class="mystic-input" placeholder="Ask the Oracle about your data..." style="flex: 1;">
+            <button type="submit" class="magic-btn primary md" id="sendBtn">
+              <span class="shimmer"></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestions Panel -->
+    <div style="width: 18rem;">
+      <div class="glass-card tilt-card" data-intensity="5" style="padding: 1.5rem; position: sticky; top: 7rem;">
+        <div class="glow-overlay"></div>
+        <h3 style="font-family: Cinzel, serif; font-size: 1.125rem; color: hsl(var(--foreground)); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+          </svg>
+          Quick Queries
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;" id="suggestions">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid hsl(var(--border));">
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: hsl(142, 76%, 56%); animation: pulse 2s ease-in-out infinite;"></span>
+            <span style="font-family: Inter, sans-serif;">Oracle Status: Active</span>
+          </div>
+          <p style="font-family: Inter, sans-serif; font-size: 0.75rem; color: hsl(var(--muted-foreground)); margin-top: 0.5rem;">
+            Ask questions in natural language. The Oracle will analyze your dataset 
+            and provide chaos-powered insights.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 1024px) {
+    .container > div:last-child > div:last-child { display: none; }
+  }
+</style>
+
+<script>
+  const suggestedQueries = [
+    { icon: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/>', label: "Identify patterns", query: "What patterns do you see in my data?" },
+    { icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>', label: "Anomalies", query: "Are there any anomalies or outliers?" },
+    { icon: '<path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>', label: "Predictions", query: "What trends can you predict from this data?" },
+    { icon: '<path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1 3 3-1-1-3-3 1z"/><path d="M19 19l-1 3-3-1 1-3 3 1z"/>', label: "Insights", query: "Give me your top 3 insights" },
+  ];
+
+  const responses = {
+    "What patterns do you see in my data?": "Through the chaos, I perceive three distinct clusters forming in your dataset. The temporal patterns suggest weekly cycles with peaks every 7 days. There's a strong correlation (0.87) between customer_age and purchase_amount that warrants deeper investigation.",
+    "Are there any anomalies or outliers?": "Reality bends around 23 data points that defy the natural order. These outliers appear concentrated in the 'amount' column, with values 3+ standard deviations from the mean. I sense they may represent either data entry errors or genuinely exceptional transactions.",
+    "What trends can you predict from this data?": "The cosmic patterns whisper of a 15% growth trajectory over the next quarter. Seasonal effects will peak in month 3, and your 'inactive' user segment shows signs of potential reactivation if targeted within 14 days of their last interaction.",
+    "Give me your top 3 insights": "**Insight 1:** Your highest-value customers (top 10%) generate 43% of total revenue—focus retention efforts here.\n\n**Insight 2:** The 'pending' status has an average resolution time of 4.2 days, suggesting a bottleneck in your approval process.\n\n**Insight 3:** Missing email data correlates with 67% lower lifetime value—data completeness directly impacts business outcomes.",
+  };
+
+  let isTyping = false;
+
+  // Set initial time
+  document.getElementById('initialTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  // Populate suggestions
+  const suggestionsContainer = document.getElementById('suggestions');
+  suggestedQueries.forEach(suggestion => {
+    const btn = document.createElement('button');
+    btn.className = 'magic-btn ghost sm';
+    btn.style.cssText = 'width: 100%; justify-content: flex-start;';
+    btn.innerHTML = `
+      <span class="shimmer"></span>
+      <div style="width: 2rem; height: 2rem; border-radius: 8px; background: hsl(var(--scarlet-dark) / 0.3); display: flex; align-items: center; justify-content: center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">${suggestion.icon}</svg>
+      </div>
+      <span>${suggestion.label}</span>
+    `;
+    btn.onclick = () => { if (!isTyping) sendMessage(suggestion.query); };
+    suggestionsContainer.appendChild(btn);
+  });
+
+  // Typing animation for spinner
+  let typingRotation = 0;
+  function animateTypingSpinner() {
+    typingRotation += 2;
+    const ring = document.getElementById('typingRing');
+    if (ring) ring.style.transform = `rotate(${typingRotation}deg)`;
+    requestAnimationFrame(animateTypingSpinner);
+  }
+  animateTypingSpinner();
+
+  function addMessage(content, isUser) {
+    const container = document.getElementById('messagesContainer');
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.style.display = 'flex';
+    messageDiv.style.justifyContent = isUser ? 'flex-end' : 'flex-start';
+    
+    if (isUser) {
+      messageDiv.innerHTML = `
+        <div style="max-width: 80%; padding: 1rem; border-radius: 1rem 1rem 0.25rem 1rem; background: hsl(var(--scarlet-dark) / 0.4); border: 1px solid hsl(var(--scarlet) / 0.3); box-shadow: var(--glow-sm);">
+          <p style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--foreground)); line-height: 1.6; white-space: pre-wrap;">${content}</p>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));">${time}</span>
+        </div>
+      `;
+    } else {
+      messageDiv.innerHTML = `
+        <div style="max-width: 80%; padding: 1rem; border-radius: 1rem 1rem 1rem 0.25rem; background: hsl(var(--muted) / 0.5); border: 1px solid hsl(var(--border));">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div style="width: 1.5rem; height: 1.5rem; border-radius: 50%; background: hsl(var(--scarlet) / 0.2); display: flex; align-items: center; justify-content: center;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+                <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/>
+              </svg>
+            </div>
+            <span style="font-family: Cinzel, serif; font-size: 0.75rem; color: hsl(var(--scarlet));">Chaos Oracle</span>
+          </div>
+          <p style="font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--foreground)); line-height: 1.6; white-space: pre-wrap;">${content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+          <span style="display: block; margin-top: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));">${time}</span>
+        </div>
+      `;
+    }
+    
+    container.appendChild(messageDiv);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendMessage(query) {
+    if (!query.trim() || isTyping) return;
+    
+    addMessage(query, true);
+    isTyping = true;
+    document.getElementById('typingIndicator').style.display = 'block';
+    document.getElementById('chatInput').value = '';
+    document.getElementById('chatInput').disabled = true;
+    document.getElementById('sendBtn').disabled = true;
+    
+    const response = responses[query] || "I sense great complexity in your question. The patterns in your data suggest multiple interpretations. Could you be more specific about which dimension of reality you wish to explore?";
+    
+    setTimeout(() => {
+      document.getElementById('typingIndicator').style.display = 'none';
+      addMessage(response, false);
+      isTyping = false;
+      document.getElementById('chatInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      document.getElementById('chatInput').focus();
+    }, 1500);
+  }
+
+  document.getElementById('chatForm').onsubmit = (e) => {
+    e.preventDefault();
+    const input = document.getElementById('chatInput');
+    sendMessage(input.value);
+  };
+</script>
+{% endblock %}
