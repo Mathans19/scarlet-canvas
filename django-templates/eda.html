@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}EDA Report - WANDA Analytics{% endblock %}
+{% block nav_eda %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Header -->
+  <div style="margin-bottom: 3rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem;">
+    <div>
+      <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem;">
+        <span class="gradient-text text-glow">Reality Analysis</span>
+      </h1>
+      <p style="color: hsl(var(--muted-foreground)); font-family: Inter, sans-serif; max-width: 36rem;">
+        Exploratory insights channeled from your dataset. Every pattern revealed, 
+        every anomaly exposed.
+      </p>
+    </div>
+    <button class="magic-btn secondary sm">
+      <span class="shimmer"></span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+      </svg>
+      Refresh Analysis
+    </button>
+  </div>
+
+  <!-- Stats Grid -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 3rem;">
+    <div class="glass-card tilt-card float" data-intensity="10" style="padding: 1.5rem;">
+      <div class="glow-overlay"></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="width: 3rem; height: 3rem; border-radius: 0.75rem; background: hsl(var(--scarlet-dark) / 0.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+          </svg>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: hsl(142, 76%, 56%); font-family: Inter, sans-serif;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+          +12.5%
+        </div>
+      </div>
+      <p style="font-family: Cinzel, serif; font-size: 1.5rem; color: hsl(var(--foreground)); margin-bottom: 0.25rem;">1,247,832</p>
+      <p style="color: hsl(var(--muted-foreground)); font-size: 0.875rem; font-family: Inter, sans-serif;">Total Rows</p>
+    </div>
+
+    <div class="glass-card tilt-card float" data-intensity="10" style="padding: 1.5rem; animation-delay: 0.1s;">
+      <div class="glow-overlay"></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="width: 3rem; height: 3rem; border-radius: 0.75rem; background: hsl(var(--scarlet-dark) / 0.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <path d="M3 3v18h18"/><rect x="7" y="5" width="3" height="14"/><rect x="14" y="5" width="3" height="14"/>
+          </svg>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: hsl(142, 76%, 56%); font-family: Inter, sans-serif;">
+          Stable
+        </div>
+      </div>
+      <p style="font-family: Cinzel, serif; font-size: 1.5rem; color: hsl(var(--foreground)); margin-bottom: 0.25rem;">24</p>
+      <p style="color: hsl(var(--muted-foreground)); font-size: 0.875rem; font-family: Inter, sans-serif;">Columns</p>
+    </div>
+
+    <div class="glass-card tilt-card float" data-intensity="10" style="padding: 1.5rem; animation-delay: 0.2s;">
+      <div class="glow-overlay"></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="width: 3rem; height: 3rem; border-radius: 0.75rem; background: hsl(var(--scarlet-dark) / 0.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: hsl(142, 76%, 56%); font-family: Inter, sans-serif;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+          -0.8%
+        </div>
+      </div>
+      <p style="font-family: Cinzel, serif; font-size: 1.5rem; color: hsl(var(--foreground)); margin-bottom: 0.25rem;">3.2%</p>
+      <p style="color: hsl(var(--muted-foreground)); font-size: 0.875rem; font-family: Inter, sans-serif;">Missing Values</p>
+    </div>
+
+    <div class="glass-card tilt-card float" data-intensity="10" style="padding: 1.5rem; animation-delay: 0.3s;">
+      <div class="glow-overlay"></div>
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
+        <div style="width: 3rem; height: 3rem; border-radius: 0.75rem; background: hsl(var(--scarlet-dark) / 0.3); display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--scarlet))" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: hsl(142, 76%, 56%); font-family: Inter, sans-serif;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+          +2.3%
+        </div>
+      </div>
+      <p style="font-family: Cinzel, serif; font-size: 1.5rem; color: hsl(var(--foreground)); margin-bottom: 0.25rem;">94.7%</p>
+      <p style="color: hsl(var(--muted-foreground)); font-size: 0.875rem; font-family: Inter, sans-serif;">Data Quality</p>
+    </div>
+  </div>
+
+  <!-- Column Analysis -->
+  <div class="glass-card tilt-card" data-intensity="3" style="padding: 2rem; margin-bottom: 2rem;">
+    <div class="glow-overlay"></div>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+      <h2 style="font-family: Cinzel, serif; font-size: 1.5rem; color: hsl(var(--foreground));">Column Insights</h2>
+      <button class="magic-btn ghost sm">
+        <span class="shimmer"></span>
+        Export Report
+      </button>
+    </div>
+    
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="border-bottom: 1px solid hsl(var(--border));">
+            <th style="text-align: left; padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground)); font-weight: 500;">Column</th>
+            <th style="text-align: left; padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground)); font-weight: 500;">Type</th>
+            <th style="text-align: left; padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground)); font-weight: 500;">Null %</th>
+            <th style="text-align: left; padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground)); font-weight: 500;">Unique %</th>
+            <th style="text-align: left; padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground)); font-weight: 500;">Distribution</th>
+          </tr>
+        </thead>
+        <tbody id="columnTable">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Distribution Charts -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+    <!-- Numeric Distribution -->
+    <div class="glass-card tilt-card" data-intensity="8" style="padding: 1.5rem;">
+      <div class="glow-overlay"></div>
+      <h3 style="font-family: Cinzel, serif; font-size: 1.125rem; color: hsl(var(--foreground)); margin-bottom: 1rem;">Value Distribution</h3>
+      <div id="valueDistribution" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Correlation Matrix -->
+    <div class="glass-card tilt-card" data-intensity="8" style="padding: 1.5rem;">
+      <div class="glow-overlay"></div>
+      <h3 style="font-family: Cinzel, serif; font-size: 1.125rem; color: hsl(var(--foreground)); margin-bottom: 1rem;">Correlation Heatmap</h3>
+      <div id="correlationMatrix" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;">
+        <!-- Populated by JS -->
+      </div>
+      <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-size: 0.75rem; color: hsl(var(--muted-foreground)); font-family: Inter, sans-serif;">
+        <span>Low</span>
+        <span>High</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .container > div:first-child { flex-direction: column; align-items: flex-start; }
+    .container > div:nth-child(2) { grid-template-columns: 1fr; }
+    .container > div:last-child { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Column data
+  const columns = [
+    { name: "customer_id", type: "INT", nulls: "0%", unique: "100%", distribution: 85 },
+    { name: "purchase_date", type: "DATETIME", nulls: "0.1%", unique: "67%", distribution: 72 },
+    { name: "amount", type: "FLOAT", nulls: "0%", unique: "43%", distribution: 90 },
+    { name: "category", type: "STRING", nulls: "2.1%", unique: "0.1%", distribution: 45 },
+    { name: "region", type: "STRING", nulls: "0%", unique: "0.02%", distribution: 30 },
+    { name: "customer_age", type: "INT", nulls: "5.3%", unique: "0.5%", distribution: 65 },
+  ];
+
+  // Populate column table
+  const tableBody = document.getElementById('columnTable');
+  columns.forEach(col => {
+    const row = document.createElement('tr');
+    row.style.borderBottom = '1px solid hsl(var(--border) / 0.5)';
+    row.style.transition = 'background 0.3s';
+    row.onmouseenter = () => { row.style.background = 'hsl(var(--scarlet-dark) / 0.05)'; };
+    row.onmouseleave = () => { row.style.background = 'transparent'; };
+    row.innerHTML = `
+      <td style="padding: 1rem;"><span style="font-family: monospace; font-size: 0.875rem; color: hsl(var(--foreground));">${col.name}</span></td>
+      <td style="padding: 1rem;"><span style="padding: 0.25rem 0.5rem; border-radius: 0.375rem; background: hsl(var(--muted)); font-size: 0.75rem; font-family: Inter, sans-serif; color: hsl(var(--muted-foreground));">${col.type}</span></td>
+      <td style="padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground));">${col.nulls}</td>
+      <td style="padding: 1rem; font-family: Inter, sans-serif; font-size: 0.875rem; color: hsl(var(--muted-foreground));">${col.unique}</td>
+      <td style="padding: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="flex: 1; height: 8px; border-radius: 9999px; background: hsl(var(--muted)); overflow: hidden;">
+            <div style="height: 100%; width: ${col.distribution}%; border-radius: 9999px; background: linear-gradient(90deg, hsl(var(--scarlet-dark)), hsl(var(--scarlet))); transition: box-shadow 0.5s;"></div>
+          </div>
+          <span style="font-family: Inter, sans-serif; font-size: 0.75rem; color: hsl(var(--muted-foreground)); width: 2rem;">${col.distribution}%</span>
+        </div>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  // Value distribution
+  const distributions = [
+    { range: "0-100", width: 15 },
+    { range: "100-500", width: 35 },
+    { range: "500-1000", width: 28 },
+    { range: "1000-5000", width: 18 },
+    { range: "5000+", width: 4 },
+  ];
+
+  const distContainer = document.getElementById('valueDistribution');
+  distributions.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.style.display = 'flex';
+    row.style.alignItems = 'center';
+    row.style.gap = '1rem';
+    row.innerHTML = `
+      <span style="font-family: monospace; font-size: 0.75rem; color: hsl(var(--muted-foreground)); width: 5rem;">${d.range}</span>
+      <div style="flex: 1; height: 1.5rem; border-radius: 4px; background: hsl(var(--muted) / 0.5); overflow: hidden; position: relative;">
+        <div style="height: 100%; width: ${d.width}%; background: linear-gradient(90deg, hsl(var(--blood)), hsl(var(--scarlet)), hsl(var(--scarlet-glow))); transition: all 0.7s; transition-delay: ${i * 0.1}s;"></div>
+        <span style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); font-family: Inter, sans-serif; font-size: 0.75rem; color: hsl(var(--foreground));">${d.width}%</span>
+      </div>
+    `;
+    distContainer.appendChild(row);
+  });
+
+  // Correlation matrix
+  const matrixContainer = document.getElementById('correlationMatrix');
+  for (let i = 0; i < 25; i++) {
+    const value = Math.random();
+    const hue = value > 0.5 ? 348 : 200;
+    const lightness = 20 + value * 40;
+    const cell = document.createElement('div');
+    cell.style.aspectRatio = '1';
+    cell.style.borderRadius = '4px';
+    cell.style.background = `hsl(${hue}, 70%, ${lightness}%)`;
+    cell.style.transition = 'transform 0.3s';
+    cell.style.cursor = 'pointer';
+    if (value > 0.7) cell.style.boxShadow = `0 0 10px hsl(${hue}, 70%, ${lightness}%)`;
+    cell.title = `Correlation: ${value.toFixed(2)}`;
+    cell.onmouseenter = () => { cell.style.transform = 'scale(1.1)'; };
+    cell.onmouseleave = () => { cell.style.transform = 'scale(1)'; };
+    matrixContainer.appendChild(cell);
+  }
+</script>
+{% endblock %}
