@@ -2,7 +2,8 @@ import { useState } from "react";
 import { BarChart2, PieChart, LineChart, ScatterChart, Layers, Download, Maximize, Share2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import TiltCard from "@/components/TiltCard";
-import MagicButton from "@/components/MagicButton";
+import ChaosBlastButton from "@/components/ChaosBlastButton";
+import CharacterGuide from "@/components/CharacterGuide";
 
 const chartTypes = [
   { id: "bar", label: "Bar Chart", icon: BarChart2 },
@@ -225,6 +226,7 @@ const Visualize = () => {
 
   return (
     <Layout>
+      <CharacterGuide page="visualize" />
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="mb-12">
@@ -247,7 +249,7 @@ const Visualize = () => {
               </h3>
               <div className="space-y-2">
                 {chartTypes.map((chart) => (
-                  <MagicButton
+                  <ChaosBlastButton
                     key={chart.id}
                     onClick={() => setActiveChart(chart.id)}
                     variant={activeChart === chart.id ? "primary" : "ghost"}
@@ -256,7 +258,7 @@ const Visualize = () => {
                   >
                     <chart.icon className="w-5 h-5" />
                     <span>{chart.label}</span>
-                  </MagicButton>
+                  </ChaosBlastButton>
                 ))}
               </div>
             </TiltCard>
@@ -304,7 +306,7 @@ const Visualize = () => {
                 { label: "Full Screen", icon: Maximize },
                 { label: "Share Link", icon: Share2 },
               ].map((action) => (
-                <MagicButton
+                <ChaosBlastButton
                   key={action.label}
                   variant="secondary"
                   size="sm"
@@ -312,7 +314,7 @@ const Visualize = () => {
                 >
                   <action.icon className="w-4 h-4" />
                   {action.label}
-                </MagicButton>
+                </ChaosBlastButton>
               ))}
             </div>
           </div>

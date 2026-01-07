@@ -6,7 +6,7 @@ import HexOverlay from "./HexOverlay";
 import GlitchEffect from "./GlitchEffect";
 import ChaosEnergy from "./ChaosEnergy";
 import AudioToggle from "./AudioToggle";
-import PageTransition from "./PageTransition";
+import DarkholdPageTransition from "./DarkholdPageTransition";
 import wandaBg from "@/assets/scarlet-witch-bg.jpg";
 
 interface LayoutProps {
@@ -62,11 +62,11 @@ const Layout = ({ children }: LayoutProps) => {
       
       {/* Main content with page transition */}
       <main className="relative z-10 pt-24 pb-12">
-        <PageTransition>
+        <DarkholdPageTransition>
           <div className="reality-glitch">
             {children}
           </div>
-        </PageTransition>
+        </DarkholdPageTransition>
       </main>
       
       {/* Scarlet Witch Crown Watermark */}

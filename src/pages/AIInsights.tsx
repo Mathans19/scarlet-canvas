@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Sparkles, Brain, Zap, Eye } from "lucide-react";
 import Layout from "@/components/Layout";
 import TiltCard from "@/components/TiltCard";
-import MagicButton from "@/components/MagicButton";
+import ChaosBlastButton from "@/components/ChaosBlastButton";
 import ChaosSpinner from "@/components/ChaosSpinner";
+import CharacterGuide from "@/components/CharacterGuide";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   id: number;
@@ -24,7 +26,7 @@ const AIInsights = () => {
     {
       id: 1,
       role: "assistant",
-      content: "I am the manifestation of chaos wisdom. Ask me anything about your data, and I shall reveal the hidden truths within the patterns of reality.",
+      content: "I am the manifestation of chaos wisdom, channeling the power of the Darkhold. Ask me anything about your data, and I shall reveal the hidden truths within the patterns of reality.",
       timestamp: new Date(),
     },
   ]);
@@ -40,35 +42,101 @@ const AIInsights = () => {
     scrollToBottom();
   }, [messages]);
 
-  const simulateResponse = (query: string) => {
+  const streamChat = async (userMessages: { role: string; content: string }[]) => {
     setIsTyping(true);
-    
-    const responses: Record<string, string> = {
-      "What patterns do you see in my data?": "Through the chaos, I perceive three distinct clusters forming in your dataset. The temporal patterns suggest weekly cycles with peaks every 7 days. There's a strong correlation (0.87) between customer_age and purchase_amount that warrants deeper investigation.",
-      "Are there any anomalies or outliers?": "Reality bends around 23 data points that defy the natural order. These outliers appear concentrated in the 'amount' column, with values 3+ standard deviations from the mean. I sense they may represent either data entry errors or genuinely exceptional transactions.",
-      "What trends can you predict from this data?": "The cosmic patterns whisper of a 15% growth trajectory over the next quarter. Seasonal effects will peak in month 3, and your 'inactive' user segment shows signs of potential reactivation if targeted within 14 days of their last interaction.",
-      "Give me your top 3 insights": "**Insight 1:** Your highest-value customers (top 10%) generate 43% of total revenue—focus retention efforts here.\n\n**Insight 2:** The 'pending' status has an average resolution time of 4.2 days, suggesting a bottleneck in your approval process.\n\n**Insight 3:** Missing email data correlates with 67% lower lifetime value—data completeness directly impacts business outcomes.",
-    };
+    let assistantContent = "";
 
-    const response = responses[query] || "I sense great complexity in your question. The patterns in your data suggest multiple interpretations. Could you be more specific about which dimension of reality you wish to explore?";
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ messages: userMessages }),
+        }
+      );
 
-    setTimeout(() => {
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to get response");
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (!reader) throw new Error("No reader available");
+
+      let textBuffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantContent += content;
+              setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (last?.role === "assistant" && last.id !== 1) {
+                  return prev.map((m, i) =>
+                    i === prev.length - 1 ? { ...m, content: assistantContent } : m
+                  );
+                }
+                return [
+                  ...prev,
+                  {
+                    id: Date.now(),
+                    role: "assistant",
+                    content: assistantContent,
+                    timestamp: new Date(),
+                  },
+                ];
+              });
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now(),
           role: "assistant",
-          content: response,
+          content: "The chaos magic falters... Please try again.",
           timestamp: new Date(),
         },
       ]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now(),
@@ -78,11 +146,19 @@ const AIInsights = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    simulateResponse(input);
     setInput("");
+
+    const allMessages = [
+      ...messages.filter((m) => m.id !== 1).map((m) => ({ role: m.role, content: m.content })),
+      { role: "user", content: input },
+    ];
+
+    await streamChat(allMessages);
   };
 
-  const handleSuggestion = (query: string) => {
+  const handleSuggestion = async (query: string) => {
+    if (isTyping) return;
+
     const userMessage: Message = {
       id: Date.now(),
       role: "user",
@@ -91,11 +167,18 @@ const AIInsights = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    simulateResponse(query);
+
+    const allMessages = [
+      ...messages.filter((m) => m.id !== 1).map((m) => ({ role: m.role, content: m.content })),
+      { role: "user", content: query },
+    ];
+
+    await streamChat(allMessages);
   };
 
   return (
     <Layout>
+      <CharacterGuide page="insights" />
       <div className="container mx-auto px-6 h-[calc(100vh-8rem)] flex flex-col">
         {/* Header */}
         <div className="mb-8">
@@ -103,7 +186,7 @@ const AIInsights = () => {
             <span className="gradient-text text-glow">Chaos Oracle</span>
           </h1>
           <p className="text-muted-foreground font-sans max-w-xl">
-            Channel the wisdom of artificial intelligence to unlock insights hidden 
+            Channel the wisdom of artificial intelligence to unlock insights hidden
             within your data. Ask, and reality shall answer.
           </p>
         </div>
@@ -149,7 +232,7 @@ const AIInsights = () => {
                   </div>
                 ))}
 
-                {isTyping && (
+                {isTyping && messages[messages.length - 1]?.role !== "assistant" && (
                   <div className="flex justify-start">
                     <div className="bg-muted/50 border border-border rounded-2xl rounded-bl-sm p-4">
                       <div className="flex items-center gap-4">
@@ -173,11 +256,9 @@ const AIInsights = () => {
                     className="mystic-input flex-1"
                     disabled={isTyping}
                   />
-                  <MagicButton
-                    disabled={!input.trim() || isTyping}
-                  >
+                  <ChaosBlastButton disabled={!input.trim() || isTyping}>
                     <Send className="w-4 h-4" />
-                  </MagicButton>
+                  </ChaosBlastButton>
                 </form>
               </div>
             </TiltCard>
@@ -192,7 +273,7 @@ const AIInsights = () => {
               </h3>
               <div className="space-y-3">
                 {suggestedQueries.map((suggestion) => (
-                  <MagicButton
+                  <ChaosBlastButton
                     key={suggestion.label}
                     onClick={() => handleSuggestion(suggestion.query)}
                     disabled={isTyping}
@@ -204,7 +285,7 @@ const AIInsights = () => {
                       <suggestion.icon className="w-4 h-4 text-scarlet" />
                     </div>
                     <span>{suggestion.label}</span>
-                  </MagicButton>
+                  </ChaosBlastButton>
                 ))}
               </div>
 
@@ -214,8 +295,7 @@ const AIInsights = () => {
                   <span className="font-sans">Oracle Status: Active</span>
                 </div>
                 <p className="font-sans text-xs text-muted-foreground mt-2">
-                  Ask questions in natural language. The Oracle will analyze your dataset 
-                  and provide chaos-powered insights.
+                  Powered by chaos magic AI. Ask questions in natural language.
                 </p>
               </div>
             </TiltCard>

@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Trash2, Wand2, ArrowUpDown, Filter, CheckCircle2, XCircle } from "lucide-react";
 import Layout from "@/components/Layout";
 import TiltCard from "@/components/TiltCard";
-import MagicButton from "@/components/MagicButton";
+import ChaosBlastButton from "@/components/ChaosBlastButton";
 import ChaosSpinner from "@/components/ChaosSpinner";
+import CharacterGuide from "@/components/CharacterGuide";
 
 const sampleData = [
   { id: 1, name: "John Doe", email: "john@email.com", age: 28, score: 85.5, status: "active" },
@@ -44,6 +45,7 @@ const CleanData = () => {
 
   return (
     <Layout>
+      <CharacterGuide page="clean" />
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="mb-12">
@@ -98,7 +100,7 @@ const CleanData = () => {
                 ))}
               </div>
 
-              <MagicButton
+              <ChaosBlastButton
                 onClick={handleApply}
                 disabled={!selectedOp || isProcessing}
                 className="w-full"
@@ -114,7 +116,7 @@ const CleanData = () => {
                     <span>Apply Transformation</span>
                   </>
                 )}
-              </MagicButton>
+              </ChaosBlastButton>
             </TiltCard>
           </div>
 
