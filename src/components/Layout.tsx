@@ -7,6 +7,7 @@ import GlitchEffect from "./GlitchEffect";
 import ChaosEnergy from "./ChaosEnergy";
 import AudioToggle from "./AudioToggle";
 import DarkholdPageTransition from "./DarkholdPageTransition";
+import ChaosCursor from "./ChaosCursor";
 import wandaBg from "@/assets/scarlet-witch-bg.jpg";
 
 interface LayoutProps {
@@ -59,6 +60,9 @@ const Layout = ({ children }: LayoutProps) => {
       
       {/* Audio Toggle */}
       <AudioToggle />
+      
+      {/* Chaos Magic Cursor Trail */}
+      <ChaosCursor />
       
       {/* Main content with page transition */}
       <main className="relative z-10 pt-24 pb-12">
