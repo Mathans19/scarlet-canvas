@@ -14,7 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analysis_results: {
+        Row: {
+          analysis_type: Database["public"]["Enums"]["analysis_type"]
+          created_at: string | null
+          dataset_id: string | null
+          id: string
+          results: Json
+        }
+        Insert: {
+          analysis_type: Database["public"]["Enums"]["analysis_type"]
+          created_at?: string | null
+          dataset_id?: string | null
+          id?: string
+          results?: Json
+        }
+        Update: {
+          analysis_type?: Database["public"]["Enums"]["analysis_type"]
+          created_at?: string | null
+          dataset_id?: string | null
+          id?: string
+          results?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_results_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          dataset_id: string | null
+          id: string
+          role: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          dataset_id?: string | null
+          id?: string
+          role: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          dataset_id?: string | null
+          id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      datasets: {
+        Row: {
+          column_count: number | null
+          created_at: string | null
+          file_path: string | null
+          file_size: number | null
+          id: string
+          metadata: Json | null
+          name: string
+          row_count: number | null
+          status: Database["public"]["Enums"]["dataset_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          column_count?: number | null
+          created_at?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          row_count?: number | null
+          status?: Database["public"]["Enums"]["dataset_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          column_count?: number | null
+          created_at?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          row_count?: number | null
+          status?: Database["public"]["Enums"]["dataset_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +125,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      analysis_type: "eda" | "cleaning" | "visualization" | "insights"
+      dataset_status: "uploading" | "processing" | "ready" | "error"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +253,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      analysis_type: ["eda", "cleaning", "visualization", "insights"],
+      dataset_status: ["uploading", "processing", "ready", "error"],
+    },
   },
 } as const

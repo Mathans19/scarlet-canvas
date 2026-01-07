@@ -1,7 +1,8 @@
 import { TrendingUp, TrendingDown, Database, Columns, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
 import Layout from "@/components/Layout";
 import TiltCard from "@/components/TiltCard";
-import MagicButton from "@/components/MagicButton";
+import ChaosBlastButton from "@/components/ChaosBlastButton";
+import CharacterGuide from "@/components/CharacterGuide";
 
 const stats = [
   { label: "Total Rows", value: "1,247,832", icon: Database, trend: "+12.5%", up: true },
@@ -22,6 +23,7 @@ const columns = [
 const EDAReport = () => {
   return (
     <Layout>
+      <CharacterGuide page="eda" />
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -34,15 +36,15 @@ const EDAReport = () => {
               every anomaly exposed.
             </p>
           </div>
-          <MagicButton variant="secondary" size="sm">
+          <ChaosBlastButton variant="secondary" size="sm">
             <RefreshCw className="w-4 h-4" />
             Refresh Analysis
-          </MagicButton>
+          </ChaosBlastButton>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <TiltCard
               key={stat.label}
               className="p-6 float"
@@ -67,9 +69,9 @@ const EDAReport = () => {
         <TiltCard className="p-8 mb-8" intensity={3}>
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-display text-2xl text-foreground">Column Insights</h2>
-            <MagicButton variant="ghost" size="sm">
+            <ChaosBlastButton variant="ghost" size="sm">
               Export Report
-            </MagicButton>
+            </ChaosBlastButton>
           </div>
           
           <div className="overflow-x-auto">

@@ -2,8 +2,9 @@ import { useState, useCallback } from "react";
 import { Upload as UploadIcon, FileUp, Check } from "lucide-react";
 import Layout from "@/components/Layout";
 import TiltCard from "@/components/TiltCard";
-import MagicButton from "@/components/MagicButton";
+import ChaosBlastButton from "@/components/ChaosBlastButton";
 import ChaosSpinner from "@/components/ChaosSpinner";
+import CharacterGuide from "@/components/CharacterGuide";
 
 const Upload = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -40,6 +41,7 @@ const Upload = () => {
 
   return (
     <Layout>
+      <CharacterGuide page="upload" />
       <div className="container mx-auto px-6">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -100,9 +102,9 @@ const Upload = () => {
                       </h3>
                       <p className="text-muted-foreground font-sans">{uploadedFile}</p>
                     </div>
-                    <MagicButton onClick={() => setUploadedFile(null)}>
+                    <ChaosBlastButton onClick={() => setUploadedFile(null)}>
                       Channel Another Dataset
-                    </MagicButton>
+                    </ChaosBlastButton>
                   </div>
                 ) : isUploading ? (
                   <div className="space-y-6 py-4">
@@ -145,9 +147,9 @@ const Upload = () => {
 
                     <div className="pt-4">
                       <label>
-                        <MagicButton>
+                        <ChaosBlastButton>
                           Browse Files
-                        </MagicButton>
+                        </ChaosBlastButton>
                         <input
                           type="file"
                           className="hidden"
